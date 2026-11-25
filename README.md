@@ -122,13 +122,14 @@ If something is not working:
 
 ## The Basic Workflow
 
-Every piece of work goes through the same seven steps. Each step is a skill, and Claude starts it when it applies, so you do not have to call it yourself.
+Every piece of work goes through the same steps; the plan step runs only when it is needed. Each step is a skill, and Claude starts it when it applies, so you do not have to call it yourself.
 
 ```mermaid
 flowchart LR
     A[Brainstorm] --> B[Worktree]
-    B --> C[Plan]
-    C --> D[Build]
+    B -->|plan needed| C[Plan]
+    B -->|otherwise| D[Build]
+    C --> D
     D --> E[Review]
     E -->|next task| D
     E -->|all done| F[Finish]
@@ -138,9 +139,9 @@ flowchart LR
 
 2. **using-git-worktrees** starts once the design is approved. It creates a separate workspace on a new branch, runs the project setup, and checks that the tests pass before anything changes.
 
-3. **writing-plans** breaks the approved design into small tasks of 2 to 5 minutes each, with exact file paths, complete code and a verify step. *Each task becomes a native task, with its dependencies.*
+3. **writing-plans** runs only when the plan has a job to do: someone else builds the work (subagents, a second session, a cheaper model), the build is too long for one session's context, the design leaves the build order or interfaces unsettled, or you ask for one. Otherwise the session builds straight from the approved design and its native tasks, with the same worktree, test-first loop and one fresh-context review of the whole branch at the end. Claude says which way it will go when it hands you the design. When it runs, it breaks the approved design into small tasks of 2 to 5 minutes each, with exact file paths, complete code and a verify step. *Each task becomes a native task, with its dependencies.*
 
-4. **subagent-driven-development** or **executing-plans** carries out the plan. The first sends each task to a fresh subagent and reviews it twice: does it match the spec, then is the code good. The second, the cheapest, does every task in the current session and reviews the whole branch once at the end. Both stop only at tasks the plan marks as user gates.
+4. **subagent-driven-development** or **executing-plans** carries out the plan, when there is one. The first sends each task to a fresh subagent and reviews it twice: does it match the spec, then is the code good. The second, the cheapest, does every task in the current session and reviews the whole branch once at the end. Both stop only at tasks the plan marks as user gates.
 
    **Architect pattern:** a plan executed in a separate session can ask the session that wrote it for help, over Claude Code's agent chat (`ListAgents` and `SendMessage`). The planning session answers design questions as the architect, while the executor keeps a focused context. This lets a long-running session hand off side work without losing what it knows.
 
@@ -150,7 +151,7 @@ flowchart LR
 
 7. **finishing-a-development-branch** runs when every task is done. It checks the tests, lets you choose to merge, open a PR, keep or discard the branch, and cleans up the worktree.
 
-**Claude checks for a matching skill before every task.** These are workflows it must follow, not suggestions.
+**How strictly Claude applies the skills depends on the model.** Sonnet and Haiku check for a matching skill before every task and use it unless you say otherwise. Opus asks you in one line when you have not said whether you want a skill's workflow. Fable makes the call itself. On every model, a skill you ask for by name runs, a skill you tell it to skip is skipped, and a skill once started is followed in full.
 
 ## How Native Tasks Work
 
@@ -344,7 +345,7 @@ Both keys go in one object when you use them together:
 | **Debugging** | `systematic-debugging` | Finds the root cause in 4 phases before any fix. Includes techniques for tracing a cause back, adding checks at several layers, and waiting on conditions instead of fixed delays. |
 | | `verification-before-completion` | Runs the check and shows the output before Claude says something is fixed or done. |
 | **Collaboration** | `brainstorming` | Turns a rough idea into a design by asking questions, one at a time. *Creates native tasks.* |
-| | `writing-plans` | Writes a detailed plan of small tasks. *Each task becomes a native task with its dependencies.* |
+| | `writing-plans` | Optional. Writes a detailed plan of small tasks when the builder is not the designing session or the work is too long for one context. *Each task becomes a native task with its dependencies.* |
 | | `executing-plans` | Runs the plan in the current session with one review at the end. *Can resume from native tasks and stops at user gates.* |
 | | `subagent-driven-development` | Sends each task to a fresh subagent and reviews it twice: spec first, then code quality. |
 | | `dispatching-parallel-agents` | Runs independent tasks in parallel subagents. |

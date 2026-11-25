@@ -48,6 +48,7 @@ Every layer is dormant without the routing file (one file-existence check, then 
 
 Stated plainly so nobody mistakes model selection for cost governance:
 
+- **No routing for plan-less builds.** `brainstorming` may build straight from an approved design without `writing-plans`; that build runs on the session model. The `<model-routing-active>` notice is one of the conditions that sends `brainstorming` to `writing-plans`, so a project with a routing file keeps the plan pipeline, but nothing enforces that choice.
 - **No token budgets or spend ceilings.** Routing lowers the per-token rate of dispatches. A plan with many retries still spends what it spends — at a lower rate, without a cap.
 - **No per-task cost observability.** The plugin has no access to billing or token telemetry; it cannot report what a task cost.
 - **No blast-radius estimation.** There is no pre-dispatch token-ceiling prediction or budget pre-validation. (Claude Code's native `Workflow` tool has a per-turn `budget` API; that is session tooling, not plugin scope.)
