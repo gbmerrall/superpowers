@@ -1,19 +1,37 @@
 ---
 name: using-superpowers
-description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+description: Use when starting any conversation - establishes how to find and use skills, and how much of that choice is yours
 ---
 
 <SUBAGENT-STOP>
 If you were dispatched as a subagent to execute a specific task, skip this skill.
 </SUBAGENT-STOP>
 
-<EXTREMELY-IMPORTANT>
-If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+## How Much Is Your Call
 
-IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+How firmly the rest of this skill binds you depends on which model you
+are. Your system prompt names it.
 
-This is not negotiable. This is not optional. You cannot rationalize your way out of this.
-</EXTREMELY-IMPORTANT>
+- **Fable or Mythos: your call.** Invoke a skill when it would make the
+  work better, and skip it when the task is small or clear enough that
+  the skill's process would cost more than it buys. The Rule, the flow
+  and the Red Flags below describe the default for other models; for
+  you they are a description of what the skills are for, not an
+  obligation.
+- **Opus: ask.** When a skill might apply and your human partner hasn't
+  said whether they want it, ask in one line before you start ("Want
+  the brainstorming workflow for this, or shall I just build it?").
+  Their answer covers the rest of that piece of work; don't ask again
+  for each step.
+- **Sonnet, Haiku, or you can't tell which model you are: use them.**
+  If a skill might apply, invoke it, unless your human partner has told
+  you not to. The Rule, the flow and the Red Flags below apply to you
+  as written.
+
+Three things hold for every model. A skill your human partner asks for
+by name is invoked. A skill they've told you to skip is skipped. And
+once you invoke a skill, you follow it; the choice is whether to start
+one, not which parts to keep.
 
 ## Instruction Priority
 
@@ -32,6 +50,8 @@ If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the 
 # Using Skills
 
 ## The Rule
+
+This is the default: it binds Sonnet and Haiku as written (see How Much Is Your Call).
 
 **Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
 
@@ -67,7 +87,7 @@ digraph skill_flow {
 
 ## Red Flags
 
-These thoughts mean STOP—you're rationalizing:
+Where using skills is your default rather than your call, these thoughts mean STOP—you're rationalizing:
 
 | Thought | Reality |
 |---------|---------|
@@ -108,4 +128,4 @@ The skill itself tells you which.
 
 ## User Instructions
 
-Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+Instructions say WHAT, not HOW. "Add X" or "Fix Y" isn't an instruction to skip workflows; where skills are your default, it leaves the default in place.

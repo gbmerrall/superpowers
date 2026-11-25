@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use when a multi-step task with a spec or requirements will be built by subagents, a separate session or a cheaper model, is too long for one session's context, or your human partner asks for a written plan - before touching code
 ---
 
 # Writing Plans

@@ -29,7 +29,8 @@ Before you start implementing, you must, in order:
    human partner pick one (see Lay out the approaches).
 2. Write the design doc, short or full (see Size the Work).
 3. Get their approval of that doc.
-4. Invoke the superpowers-extended-cc:writing-plans skill.
+4. Build it: yourself from the design, or through a written plan when
+   one is needed (see After the Design).
 
 If nothing is open when you write your first message and there's one
 sensible way, steps 1 to 3 happen in that message (see Your First
@@ -73,7 +74,8 @@ Move the work forward, with one of these:
   sensible way: end with the short design itself (the approach, a line on
   why the others don't fit, and the design in a few lines) and ask them
   to approve it. Their approval covers the approach and the design: write
-  the short design doc as approved and go on to the plan.
+  the short design doc as approved and go on to building (see After the
+  Design).
   Specs are often incomplete, so confirm before you build on one.
 - **They haven't:** one open question, in their own terms, about the
   biggest thing their request leaves unsettled. Say why you're asking:
@@ -278,9 +280,41 @@ and the gate goes with it. A spike they said yes to may be built; it
 stays labeled throwaway, and keeping what it produced is a new request
 that comes back through this gate.
 
-After the design doc is approved, the next step is the plan: invoke
-superpowers-extended-cc:writing-plans and no other skill.
+After the design doc is approved, the next step is After the Design,
+below, and nothing else.
 </HARD-GATE>
+
+## After the Design
+
+An approved design doc is what building needs. An implementation plan is
+a second document, and it earns its cost only when it has a job to do:
+
+- **Someone else builds it.** A subagent per task, a second session, or
+  a cheaper model starts with none of this conversation. The plan is how
+  your decisions reach them.
+- **The work outlasts your context.** A build long enough to be
+  compacted, or to span sessions, needs its state on disk.
+- **You can't yet see through the build.** If the design leaves
+  interfaces between parts or the order of work unsettled in your own
+  mind, settling them on paper is cheaper than settling them in code.
+- **Your human partner wants one:** they asked, their instructions say
+  to plan, or this session carries a `<model-routing-active>` notice
+  (routing only takes effect through plan execution).
+- **Their request set a gate:** a check that must pass before the work
+  moves on ("try it on one, then do all", "prove it works first").
+  Plan writing is where gates get tagged and made non-skippable.
+
+When you hand over the design doc for approval, say in one line which
+way you'll build it and why. Their approval covers that call, and they
+can pick the other way.
+
+**With a plan:** invoke superpowers-extended-cc:writing-plans and no other skill.
+
+**Without one**, you are the builder and the design doc is your spec:
+read `building-without-a-plan.md` in this directory and follow it.
+
+If the build grows until one of the jobs above becomes real, stop, say
+so, and write the plan for what remains.
 
 **You MUST NOT call `EnterPlanMode` or `ExitPlanMode` during this skill.** This skill operates in normal mode. Plan mode restricts Write/Edit tools and has no clean exit. Use the writing-plans skill for structured planning instead.
 
@@ -294,6 +328,8 @@ superpowers-extended-cc:writing-plans and no other skill.
 | "I should explain the process first" | Ask your question. The process shows itself. |
 | "They said 'sounds good' to the idea" | Approval covers what you showed them. A design doc you haven't written isn't approved. |
 | "The spike works, I'll keep building on it" | Keeping it is a new request. Back through the gate. |
+| "It's a long build, but I can hold it in my head" | Compaction doesn't ask first. Work that outlasts your context gets a plan. |
+| "No plan, so no review" | Skipping the plan skips a document. The worktree, the tests and the fresh-context review stay. |
 
 ## Visual Companion
 
@@ -348,7 +384,7 @@ TaskCreate:
   activeForm: "Implementing [Component Name]"
 ```
 
-These tasks will be refined with steps and verify commands during plan writing. See `skills/shared/task-format-reference.md` for the full format.
+These tasks are your work list when you build without a plan. When a plan is written, plan writing refines them with steps and verify commands. See `skills/shared/task-format-reference.md` for the full format.
 
 Track all task IDs for dependency setup.
 

@@ -26,6 +26,7 @@ Valid values: `"per-task"` (the default) and `"at-end"`. Absent file, absent key
 
 ## What this flow does NOT do
 
+- **No enforcement on plan-less builds.** When `brainstorming` builds straight from an approved design without `writing-plans`, `skills/brainstorming/building-without-a-plan.md` tells the session to honor `at-end` with one commit after the last task. That is skill prose; the TaskCreate gate only recognizes plan-shaped tasks with commit steps.
 - **No dispatch-side enforcement.** The gate covers plan-task creation (TaskCreate). An implementer *prompt* containing a commit instruction is still advisory territory - the coordinator composes those prompts inline and no plan artifact carries them, so there is nothing stable to gate on.
 - **No cross-gate coordination.** This gate and the model-tier gate evaluate the same TaskCreate independently; a task violating both may surface both block messages. The harness's aggregation order is not specified here.
 - **No commit policy.** Message format, signing, branch protection, push behavior are out of scope; the key only decides *when* plan execution commits.
